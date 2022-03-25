@@ -1,5 +1,3 @@
-const { login } = require("../server/controllers/Account");
-
 /* Takes in an error message. Sets the error message up in html, and
    displays it to the user. Will be hidden by other events that could
    end in an error.
@@ -55,7 +53,7 @@ const init = () => {
       const username = signupForm.querySelector('#user').value;
       const pass = signupForm.querySelector('#pass').value;
       const pass2 = signupForm.querySelector('#pass2').value;
-      const _csrf = signupForm.querySelector('#_csrf').value;
+      const _csrf = signupForm.querySelector('#_csrf');
 
       if(!username || !pass || !pass2) {
         handleError('All fields are required!');
@@ -84,7 +82,7 @@ const init = () => {
 
       const username = loginForm.querySelector('#user').value;
       const pass = loginForm.querySelector('#pass').value;
-      const _csrf = loginForm.querySelector('#_csrf').value;
+      const _csrf = loginForm.querySelector('#_csrf');
 
       if(!username || !pass) {
         handleError('Username or password is empty!');

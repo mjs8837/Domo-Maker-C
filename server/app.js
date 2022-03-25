@@ -18,18 +18,18 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const dbURI = process.env.MONGODB_URI || 'mongodb://localhost/DomoMaker';
 mongoose.connect(dbURI, (err) => {
-  if (err) {
-    console.log('Could not connect to database');
-    throw err;
-  }
+    if (err) {
+        console.log('Could not connect to database');
+        throw err;
+    }
 });
 
-const redisURL = process.env.REDISCLOUD_URL
-    || 'redis://default:KUPaLp5AV61fJ0FA8pLrFlLq1629DiCB@redis-11802.c10.us-east-1-3.ec2.cloud.redislabs.com:11802';
+const redisURL = process.env.REDISCLOUD_URL ||
+    'redis://default:KUPaLp5AV61fJ0FA8pLrFlLq1629DiCB@redis-11802.c10.us-east-1-3.ec2.cloud.redislabs.com:11802';
 
-const redisClient = redis.createClient({
-  legacyMode: true,
-  url: redisURL,
+let redisClient = redis.createClient({
+    legacyMode: true,
+    url: redisURL,
 });
 redisClient.connect().catch(console.error);
 
@@ -43,36 +43,34 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(session({
-  key: 'sessionid',
-  store: new RedisStore({
-    client: redisClient,
-  }),
-  secret: 'Domo Arigato',
-  resave: true,
-  saveUninitialized: true,
-  cooke: {
-    httpOnly: true,
-  },
+    key: 'sessionid',
+    store: new RedisStore({
+        client: redisClient,
+    }),
+    secret: 'Domo Arigato',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+    },
 }));
 
-app.engine('handlebars', expressHandlebars.engine({ defaultLayout: '' }));
+app.engine('handlebars', expressHandlebars.engine({ defaultLayout: ''}));
 app.set('view engine', 'handlebars');
 app.set('views', `${__dirname}/../views`);
 app.use(cookieParser());
 
 app.use(csrf());
 app.use((err, req, res, next) => {
-  if (err.code !== 'EBADCSRFTOKEN') {
-    return next(err);
-  }
+    if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
-  console.log('Missing CSRF token!');
-  return false;
+    console.log('Missing CSRF token!');
+    return false;
 });
 
 router(app);
 
 app.listen(port, (err) => {
-  if (err) { throw err; }
-  console.log(`Listening on port ${port}`);
+    if (err) { throw err; }
+    console.log(`Listening on port ${port}`);
 });
