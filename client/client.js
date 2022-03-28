@@ -53,7 +53,7 @@ const init = () => {
       const username = signupForm.querySelector('#user').value;
       const pass = signupForm.querySelector('#pass').value;
       const pass2 = signupForm.querySelector('#pass2').value;
-      const _csrf = signupForm.querySelector('#_csrf');
+      const _csrf = signupForm.querySelector('#_csrf').value;
 
       if(!username || !pass || !pass2) {
         handleError('All fields are required!');
@@ -82,7 +82,7 @@ const init = () => {
 
       const username = loginForm.querySelector('#user').value;
       const pass = loginForm.querySelector('#pass').value;
-      const _csrf = loginForm.querySelector('#_csrf');
+      const _csrf = loginForm.querySelector('#_csrf').value;
 
       if(!username || !pass) {
         handleError('Username or password is empty!');
